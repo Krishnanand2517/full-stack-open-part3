@@ -1,32 +1,34 @@
 const express = require('express');
+const cors = require('cors');
 const morgan = require('morgan');
 const app = express();
 
 morgan.token('content', (request, response) => JSON.stringify(request.body));
 
 app.use(express.json());
+app.use(cors());
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'));
 
 let persons = [
     { 
         "id": 1,
         "name": "Arto Hellas", 
-        "number": "040-123456"
+        "phone": "040-123456"
     },
     { 
         "id": 2,
         "name": "Ada Lovelace", 
-        "number": "39-44-5323523"
+        "phone": "39-44-5323523"
     },
     { 
         "id": 3,
         "name": "Dan Abramov", 
-        "number": "12-43-234345"
+        "phone": "12-43-234345"
     },
     { 
         "id": 4,
         "name": "Mary Poppendieck", 
-        "number": "39-23-6423122"
+        "phone": "39-23-6423122"
     }
 ];
 
@@ -76,7 +78,7 @@ app.post('/api/persons', (request, response) => {
         });
     }
 
-    if (!body.number) {
+    if (!body.phone) {
         return response.status(400).json({
             error: "Number is missing"
         });
@@ -90,7 +92,7 @@ app.post('/api/persons', (request, response) => {
 
     const person = {
         name: body.name,
-        number: body.number,
+        phone: body.phone,
         id: generateId()
     };
 
